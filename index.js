@@ -28,6 +28,16 @@ app.get('/api/students', (req, res) => {
   res.json(students)
 });
 
+app.get('/api/students/:id' ,(req,res) =>{
+  let student = students.find(s=>{
+    return s.id === parseInt(req.params.id);
+  });
+  if(!student)
+  {
+   return res.status(404).json({message: `Student with ${req.params.id} not found`});
+  }
+  res.status(200).json(student);
+});
 
 app.listen(port, () => {
   console.log(`port Listening on localhost:${port}`);
