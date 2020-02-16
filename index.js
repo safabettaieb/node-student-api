@@ -47,9 +47,26 @@ app.post('/api/students', (req, res) => {
   }
   students.push(student);
   res.statusMessage = "new student created successfully";
-  res.status(201).json(student);
+  res.status(200).json(student);
 });
-
+app.put('/api/students/:id', (req, res) => {
+  let studentIndex = students.findIndex(s => {
+    return s.id === parseInt(req.params.id);
+  });
+  if (studentIndex===-1) {
+    return res.status(404).json({
+      message: `Student with ${req.params.id} not found`
+    });
+  }
+  const st = {id:req.body.id,
+    name:req.body.name,
+    age:req.body.age
+  } 
+  res.statusMessage = "student update successfully" ;
+  res.status(200)
+  students[studentIndex]=st;
+  res.json(st);
+});
 app.listen(port, () => {
   console.log(`port Listening on localhost:${port}`);
 });
