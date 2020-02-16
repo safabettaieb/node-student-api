@@ -62,11 +62,26 @@ app.put('/api/students/:id', (req, res) => {
     name:req.body.name,
     age:req.body.age
   } 
-  res.statusMessage = "student update successfully" ;
+  res.statusMessage = "student updated successfully" ;
   res.status(200)
   students[studentIndex]=st;
   res.json(st);
 });
+app.delete('/api/students/:id',(req,res)=>{
+  let student = students.find(s => {
+    return s.id === parseInt(req.params.id);
+  });
+  if(!student){
+    res.status(404).json({
+      message: `Student with ${req.params.id} not found`
+    });}
+  students = students.filter(s=>{
+    return s!=student
+  });
+  res.statusMessage = "student deleted successfully"
+  res.status(200);
+  res.json(student);
+});
 app.listen(port, () => {
-  console.log(`port Listening on localhost:${port}`);
+  console.log(`server Listening on http://localhost:${port}`);
 });
