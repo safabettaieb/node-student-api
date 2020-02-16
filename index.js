@@ -3,7 +3,7 @@ const app = express()
 const port = process.env.PORT || 3000
 
 /* Data local */
-students = [{
+var students = [{
     id: 1,
     name: "name 1",
     age: 25
@@ -21,22 +21,33 @@ students = [{
 ]
 
 /* middleware */
-
+app.use(express.json());
 /* routes */
 app.get('/api/students', (req, res) => {
   res.status(200)
   res.json(students)
 });
 
-app.get('/api/students/:id' ,(req,res) =>{
-  let student = students.find(s=>{
+app.get('/api/students/:id', (req, res) => {
+  let student = students.find(s => {
     return s.id === parseInt(req.params.id);
   });
-  if(!student)
-  {
-   return res.status(404).json({message: `Student with ${req.params.id} not found`});
+  if (!student) {
+    return res.status(404).json({
+      message: `Student with ${req.params.id} not found`
+    });
   }
   res.status(200).json(student);
+});
+app.post('/api/students', (req, res) => {
+  const student = {
+    id: students.length + 1,
+    name: req.body.name,
+    age: req.body.age
+  }
+  students.push(student);
+  res.statusMessage = "new student created successfully";
+  res.status(201).json(student);
 });
 
 app.listen(port, () => {
