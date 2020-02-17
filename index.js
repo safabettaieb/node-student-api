@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const config = require('config');
 const studentsRouter = require('./routes/students');
 const logger = require('./middlewares/logger');
 const autho = require('./middlewares/auth');
@@ -12,6 +13,7 @@ app.use(autho);
 if(app.get('env') ==='development'){
   app.use(morgan('tiny'))
 }
+console.log(`APP NAME: ${config.get('name')}`);
 /* routes */
 app.use('/api/students',studentsRouter);
 app.listen(port , ()=>{
